@@ -17,13 +17,14 @@ class WorkspaceCreateActionTest extends TestCase
         Event::fake();
 
         $user = User::factory()->create();
-        $data = Workspace::factory()->create(['owner_id' => $user->id]);
+        $data = Workspace::factory()->raw(['owner_id' => $user->id]);
         $workspace = resolve(WorkspaceCreateAction::class)->handle(new WorkspaceCreateData(
             ownerId: $user->id,
             title: $data['title'],
         ));
 
         $this->assertInstanceOf(Workspace::class, $workspace);
+        $this->assertModelExists($workspace);
         Event::assertDispatched(WorkspaceCreated::class);
     }
 }
