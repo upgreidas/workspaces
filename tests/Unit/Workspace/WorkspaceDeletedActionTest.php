@@ -20,6 +20,7 @@ class WorkspaceDeletedActionTest extends TestCase
 
         resolve(WorkspaceDeleteAction::class)->handle($workspace);
 
+        $this->assertModelMissing($workspace);
         Event::assertDispatched(WorkspaceDeleted::class);
     }
 }
